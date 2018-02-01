@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Random;
 import java.util.logging.Logger;
 
 /**
@@ -25,8 +26,13 @@ public class HelloController {
     private DiscoveryClient client;
 
     @GetMapping("/hello")
-    public String index(){
+    public String index() throws InterruptedException {
         ServiceInstance instance = client.getLocalServiceInstance();
+        //处理线程等待几秒钟
+        int sleepTime = new Random().nextInt(3000);
+        logger.info("sleepTime:"+sleepTime);
+        Thread.sleep(sleepTime);
+
         logger.info("/test/hello,host:"+instance.getHost()+",service_id:"+instance.getServiceId());
         return "Hello Spring Boot";
     }
