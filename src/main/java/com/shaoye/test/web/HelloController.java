@@ -1,11 +1,10 @@
 package com.shaoye.test.web;
 
+import com.shaoye.test.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
 import java.util.logging.Logger;
@@ -17,7 +16,6 @@ import java.util.logging.Logger;
  * @Date:
  */
 @RestController
-@RequestMapping("/test")
 public class HelloController {
 
     private final Logger logger = Logger.getLogger(String.valueOf(getClass()));
@@ -36,4 +34,19 @@ public class HelloController {
         logger.info("/test/hello,host:"+instance.getHost()+",service_id:"+instance.getServiceId());
         return "Hello Spring Boot";
     }
+
+    @GetMapping("/hello1")
+    public String index1(@RequestParam String name){
+        return "hello "+ name ;
+    }
+
+    @GetMapping("/hello2")
+    public User index2(@RequestHeader String name,@RequestHeader Integer age){
+        return new User(name,age);
+    }
+    @PostMapping("/hello3")
+    public String index3(@RequestBody User user){
+        return "hello "+ user.getName()+","+user.getAge() ;
+    }
+
 }
